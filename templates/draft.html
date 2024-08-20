@@ -1,0 +1,197 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transit Data Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .chart-container {
+            width: 45%;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+        }
+        .data-item {
+            width: 30%;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Transit Data Dashboard</h1>
+    <div class="container">
+        <div class="chart-container">
+            <canvas id="cancellationReasonChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="statusDistributionChart"></canvas>
+        </div>
+    </div>
+    <div class="container">
+        <div class="chart-container">
+            <canvas id="paymentMethodsChart"></canvas>
+        </div>
+    </div>
+    <div class="container">
+        <div class="data-item">
+            <h2>Average Trip Duration</h2>
+            <p>{{ transit_data.avg_trip_duration }} minutes</p>
+        </div>
+        <div class="data-item">
+            <h2>Average Wait Time</h2>
+            <p>{{ transit_data.avg_wait_time }} seconds</p>
+        </div>
+        <div class="data-item">
+            <h2>Mobility Types</h2>
+            <ul>
+                {% for mobility_type, count in transit_data.mobility_types.items %}
+                    <li>{{ mobility_type }}: {{ count }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="data-item">
+            <h2>Top Pickup Addresses</h2>
+            <ul>
+                {% for address, count in transit_data.top_pickup_addresses %}
+                    <li>{{ address }}: {{ count }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="data-item">
+            <h2>Top Dropoff Addresses</h2>
+            <ul>
+                {% for address, count in transit_data.top_dropoff_addresses %}
+                    <li>{{ address }}: {{ count }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <script>
+
+        const cancellationReasonsData = JSON.parse('{{ transit_data.cancellation_reasons | safe }}');
+        const statusDistributionData = JSON.parse('{{ transit_data.status_distribution | safe }}');
+
+
+        console.log("Cancellation Reasons Data:", cancellationReasonsData);
+        const reasonsLabels = Object.keys(cancellationReasonsData);
+        const reasonsValues = Object.values(cancellationReasonsData);
+        const colors = ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9933'];
+
+        console.log("Labels:", reasonsLabels);
+        console.log("Values:", reasonsValues);
+
+        const cancellationReasonChartCanvas = document.getElementById('cancellationReasonChart');
+        console.log("Chart Canvas:", cancellationReasonChartCanvas);
+
+        new Chart(cancellationReasonChartCanvas, {
+            type: 'pie',
+            data: {
+                labels: reasonsLabels,
+                datasets: [{
+                    data: reasonsValues,
+                    backgroundColor: colors.slice(0, reasonsValues.length),
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Cancellation Reasons',
+                        font: { weight: 'bold' }
+                    },
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+
+        const statusDistributionChartCanvas = document.getElementById('statusDistributionChart');
+        new Chart(statusDistributionChartCanvas, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(statusDistributionData),
+                datasets: [{
+                    data: Object.values(statusDistributionData),
+                    backgroundColor: [
+                        '#ff6384',
+                        '#36a2eb',
+                        '#ffce56',
+                    ],
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Status Distribution',
+                        font: { weight: 'bold' }
+                    },
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+
+
+
+    const paymentMethodsData = JSON.parse('{{ transit_data.payment_methods_json | safe }}');
+
+    const paymentMethodsChartCanvas = document.getElementById('paymentMethodsChart');
+
+    new Chart(paymentMethodsChartCanvas, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(paymentMethodsData),
+                datasets: [{
+                    data: Object.values(paymentMethodsData),
+                    backgroundColor: [
+                        '#ff6384',
+                        '#36a2eb',
+                        '#ffce56',
+                    ],
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Payment methods Distribution',
+                        font: { weight: 'bold' }
+                    },
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html> -->
